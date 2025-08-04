@@ -33,7 +33,7 @@ export class SkillverifyComponent {
       AdditionalRequirements: value.AdditionalRequirements
     };
 
-    this.http.post<any>('/api/UserRequest', data).subscribe({
+    this.http.post<any>('https://localhost:7101/api/UserRequest', data).subscribe({
       next: (result) => {
         this.error = null;
         this.questions = result.questions || [];
