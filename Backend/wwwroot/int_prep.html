@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Request Interview Questions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        .question { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 6px; }
+        .mcq-options { margin-left: 1em; }
+        .code-block { background: #f4f4f4; padding: 1em; border-radius: 4px; font-family: monospace; }
+        .type-label { font-weight: bold; color: #0074d9; }
+    </style>
+</head>
+<body>
+    <h1>Generate Interview Questions</h1>
+    <form id="userRequestForm">
+        <label>Tech Stack (comma separated):<br>
+            <input type="text" name="TechStack" required>
+        </label><br><br>
+        <label>Experience (years):<br>
+            <input type="number" name="Experience" min="0">
+        </label><br><br>
+        <label>Role or Company:<br>
+            <input type="text" name="RoleOrCompany">
+        </label><br><br>
+        <label>Number of Questions:<br>
+            <input type="number" name="NoOfQuestion" min="1" required>
+        </label><br><br>
+        <label>Additional Requirements:<br>
+            <textarea name="AdditionalRequirements"></textarea>
+        </label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Generated Questions</h2>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('userRequestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                TechStack: form.TechStack.value.split(',').map(s => s.trim()).filter(Boolean),
+                Experience: form.Experience.value ? parseInt(form.Experience.value) : null,
+                RoleOrCompany: form.RoleOrCompany.value,
+                NoOfQuestion: form.NoOfQuestion.value ? parseInt(form.NoOfQuestion.value) : null,
+                AdditionalRequirements: form.AdditionalRequirements.value
+            };
+
+            const response = await fetch('/api/UserRequest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            let resultText = await response.text();
+            let resultJson;
+            try {
+                resultJson = JSON.parse(resultText);
+            } catch {
+                document.getElementById('results').innerHTML = `<pre>${resultText}</pre>`;
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            if (resultJson.questions && Array.isArray(resultJson.questions)) {
+                resultJson.questions.forEach(q => {
+                    let html = `<div class="question">`;
+                    html += `<div class="type-label">[${q.type}] Question #${q.question_no}</div>`;
+                    html += `<div><strong>${q.question}</strong></div>`;
+
+                    if (q.type === 'MCQ' && q.options && q.options.length) {
+                        html += `<ul class="mcq-options">`;
+                        q.options.forEach(opt => html += `<li>${opt}</li>`);
+                        html += `</ul>`;
+                    }
+
+                    if (q.type === 'Code' && q.code_snippet) {
+                        html += `<div class="code-block"><pre>${q.code_snippet}</pre></div>`;
+                    }
+
+                    if (q.explanation) {
+                        html += `<div><em>Explanation:</em> ${q.explanation}</div>`;
+                    }
+
+                    if (q.answer) {
+                        html += `<div><em>How to answer:</em> ${q.answer.how_to_answer || ''}</div>`;
+                        html += `<div><em>Answer:</em> ${q.answer.answer_text || ''}</div>`;
+                    }
+
+                    if (q.difficulty) {
+                        html += `<div><em>Difficulty:</em> ${q.difficulty}</div>`;
+                    }
+
+                    if (q.tags && q.tags.length) {
+                        html += `<div><em>Tags:</em> ${q.tags.join(', ')}</div>`;
+                    }
+
+                    html += `</div>`;
+                    resultsDiv.innerHTML += html;
+                });
+            } else {
+                resultsDiv.innerHTML = `<pre>${resultText}</pre>`;
+            }
+        });
+    </script>
+</body>
+</html>
