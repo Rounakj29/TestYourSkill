@@ -1,1 +1,56 @@
-<p>skillverify works!</p>
+<p-card>
+    <ng-template #title>Generate Interview Questions</ng-template>
+    <form #userRequestForm="ngForm" (ngSubmit)="onSubmit(userRequestForm)">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="techStack">Tech Stack (comma separated):</label>
+                <input pInputText id="techStack" name="TechStack" ngModel required />
+            </div>
+            <div class="p-field">
+                <label for="experience">Experience (years):</label>
+                <input pInputNumber id="experience" name="Experience" ngModel min="0" />
+            </div>
+            <div class="p-field">
+                <label for="roleOrCompany">Role or Company:</label>
+                <input pInputText id="roleOrCompany" name="RoleOrCompany" ngModel />
+            </div>
+            <div class="p-field">
+                <label for="noOfQuestion">Number of Questions:</label>
+                <input pInputNumber id="noOfQuestion" name="NoOfQuestion" ngModel min="1" required />
+            </div>
+            <div class="p-field">
+                <label for="additionalRequirements">Additional Requirements:</label>
+                <textarea pInputTextarea id="additionalRequirements" name="AdditionalRequirements" ngModel></textarea>
+            </div>
+            <div class="p-field">
+                <button pButton type="submit" label="Submit"></button>
+            </div>
+        </div>
+    </form>
+</p-card>
+
+<p-card>
+    <ng-template #title>Generated Questions</ng-template>
+    <div id="results">
+        <div *ngIf="error" class="p-error">{{ error }}</div>
+    <div *ngIf="questions.length">
+        <div *ngFor="let q of questions" class="question">
+            <div class="type-label">[{{q.type}}] Question #{{q.question_no}}</div>
+            <div><strong>{{q.question}}</strong></div>
+            <ul *ngIf="q.type === 'MCQ' && q.options?.length" class="mcq-options">
+                <li *ngFor="let opt of q.options">{{opt}}</li>
+            </ul>
+            <div *ngIf="q.type === 'Code' && q.code_snippet" class="code-block">
+                <pre>{{q.code_snippet}}</pre>
+            </div>
+            <div *ngIf="q.explanation"><em>Explanation:</em> {{q.explanation}}</div>
+            <div *ngIf="q.answer">
+                <div><em>How to answer:</em> {{q.answer.how_to_answer || ''}}</div>
+                <div><em>Answer:</em> {{q.answer.answer_text || ''}}</div>
+            </div>
+            <div *ngIf="q.difficulty"><em>Difficulty:</em> {{q.difficulty}}</div>
+            <div *ngIf="q.tags?.length"><em>Tags:</em> {{q.tags.join(', ')}}</div>
+        </div>
+    </div>
+    </div>
+</p-card>

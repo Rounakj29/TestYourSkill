@@ -4,6 +4,7 @@ import { SkillverifyComponent } from "./skillverify/skillverify.component";
 
 @Component({
     selector: 'app-root',
+    standalone: true,
     imports: [RouterOutlet, SkillverifyComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
