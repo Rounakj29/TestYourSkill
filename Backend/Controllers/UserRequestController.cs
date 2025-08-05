@@ -10,7 +10,7 @@ namespace Backend.Controllers
     public class UserRequestController : ControllerBase
     {
         private readonly IUserAndAiMediatorSeervice _mediatorSeService;
-
+        private readonly string VerificationKey = "Tacos";
         public UserRequestController(IUserAndAiMediatorSeervice mediatorSeService)
         {
             _mediatorSeService = mediatorSeService;
@@ -42,6 +42,20 @@ namespace Backend.Controllers
             var result = await _mediatorSeService.ProcessUserRequestAsync(value);
 
             return Ok(result);
+        }
+        [HttpPost("VerifyAccess")]
+        public async Task<IActionResult> VerifyAccess(string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+            {
+                return BadRequest("Request body cannot be null.");
+            }
+            var result = value.Equals(VerificationKey, StringComparison.OrdinalIgnoreCase)
+                ? "Access Granted"
+                : "Access Denied";
+            bool isAccessGranted = result.Equals("Access Granted", StringComparison.OrdinalIgnoreCase);
+            
+            return Ok(isAccessGranted);
         }
 
         // PUT api/<UserRequestController>/5
