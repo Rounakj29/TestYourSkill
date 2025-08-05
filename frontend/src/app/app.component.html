@@ -348,13 +348,19 @@
     </div>
   </div>
 </main>
-
+<p-card *ngIf="!accessGranted">
+  <div class="flex flex-col items-center w-full">
+  Click the button below to verify access to the app.
+  <p-button label="Verify Access" (click)="showDialog()" />
+  </div>
+  </p-card>
  <p-dialog class="dialog-body" header="Verify Access" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <span class="p-text-secondary block mb-8">Enter Code To Access.</span>
     <div class="flex items-center gap-4 mb-4">
-        <label for="Verify_Access" class="font-semibold w-24">Verify Access</label>
-        <input pInputText id="Verify_Access" class="flex-auto" autocomplete="off"
-               [(ngModel)]="verifyCode" />
+        <label  for="Verify_Access" class="font-semibold w-24">Verify Access</label>
+         <p-password id="Verify_Access" class="flex-auto" autocomplete="off"
+               [(ngModel)]="verifyCode" [toggleMask]="true"  size="large" [feedback]="false"/>
+       
     </div>
     <div *ngIf="errorMsg" class="p-error mb-2">{{ errorMsg }}</div>
     <div class="flex justify-start gap-2">

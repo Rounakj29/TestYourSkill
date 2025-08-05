@@ -43,39 +43,108 @@
 <p-card>
   <ng-template #title>Ready for the Challenge?</ng-template>
   <form #userRequestForm="ngForm" (ngSubmit)="onSubmit(userRequestForm)">
+    <div class="card flex flex-col gap-4 mb-4">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-microchip"></i>
+        </p-inputgroup-addon>
 
-  <div class="card grid grid-cols-1 md:grid-cols-2 gap-4">
-    <p-inputgroup>
-      <p-inputgroup-addon>
-        <i class="pi pi-microchip"></i>
-      </p-inputgroup-addon>
+        <p-floatlabel variant="in">
+          <input
+            pInputText
+            id="Texh_Stack"
+            autocomplete="off"
+            ngModel
+            name="TechStack"
+            required
+          />
+          <label for="Texh_Stack">Tech Stack (Comma Separated)</label>
+        </p-floatlabel>
+      </p-inputgroup>
+        
+      <!-- <p-inputgroup>
+        <div class="flex-auto">
+          <label for="experience">Experience (Years)</label>
 
-      <p-floatlabel variant="in">
-        <input
-          pInputText
-          id="Texh_Stack"
-          autocomplete="off"
-          ngModel
-           name="TechStack"
-          required        />
-        <label for="Texh_Stack">Tech Stack (Comma Separated)</label>
-      </p-floatlabel>
-    </p-inputgroup>
-    <p-inputgroup>
-      <div class="flex-auto">
-        <label for="experience">Experience (Years)</label>
+          <p-floatlabel class="mb-2 block font-bold" variant="in">
+            <p-inputnumber
+              ngModel
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              inputId="horizontal"
+              spinnerMode="horizontal"
+              [step]="0.1"
+              mode="decimal"
+              [min]="0"
+              name="Experience"
+              [style]="{ width: '100%' }"
+            >
+              <ng-template #incrementbuttonicon>
+                <span class="pi pi-plus"></span>
+              </ng-template>
+              <ng-template #decrementbuttonicon>
+                <span class="pi pi-minus"></span>
+              </ng-template>
+            </p-inputnumber>
+          </p-floatlabel>
+        </div>
+      </p-inputgroup> -->
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-desktop"></i>
+        </p-inputgroup-addon>
+
+        <p-floatlabel variant="in">
+          <input
+            pInputText
+            id="roleOrCompany"
+            ngModel
+            name="RoleOrCompany"
+            autocomplete="off"
+          />
+          <label for="roleOrCompany">Role Or Company</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      <p-inputgroup class="flex justify-around gap-4">
+
+      <div class="card flex flex-col items-center gap-2">
+        <label for="yearsOfExp">Years Of Experience</label>
+        <p-knob 
+          [(ngModel)]="yearsOfExperience"
+          name="Experience"
+          valueColor="MediumTurquoise"
+          rangeColor="SlateGray"
+            [min]="0"
+            [max]="70"
+          size="100"
+        />
+        <div class="flex gap-2">
+          <p-button
+            icon="pi pi-plus"
+            (onClick)="yearsOfExperience=yearsOfExperience+1"
+            [disabled]="yearsOfExperience >= 70"
+          />
+          <p-button
+            icon="pi pi-minus"
+            (click)="yearsOfExperience=yearsOfExperience-1"
+            [disabled]="yearsOfExperience <= 0"
+          />
+        </div>
+      </div>
+      <!-- <div class="flex-auto">
+        <label for="experience">No of Questions:</label>
 
         <p-floatlabel class="mb-2 block font-bold" variant="in">
           <p-inputnumber
-          ngModel
+            ngModel
             [showButtons]="true"
             buttonLayout="horizontal"
             inputId="horizontal"
             spinnerMode="horizontal"
-            [step]="0.1"
+            [step]="1"
             mode="decimal"
-            [min]="0"
-            name="Experience"
+            [min]="1"
+            name="NoOfQuestion"
             [style]="{ width: '100%' }"
           >
             <ng-template #incrementbuttonicon>
@@ -86,51 +155,33 @@
             </ng-template>
           </p-inputnumber>
         </p-floatlabel>
-      </div>
-    </p-inputgroup>
-    <p-inputgroup>
-      <p-inputgroup-addon>
-        <i class="pi pi-desktop"></i>
-      </p-inputgroup-addon>
-
-      <p-floatlabel variant="in">
-        <input
-          pInputText
-          id="roleOrCompany"
-          ngModel
-            name="RoleOrCompany"
-          autocomplete="off"
+      </div> -->
+      <div class="card flex flex-col items-center gap-2">
+        <label for="noOfQuestions">No of Questions</label>
+        <p-knob 
+            pButtonLabel="No of Questions"
+          [(ngModel)]="noOfQuestions"
+          name="NoOfQuestion"
+          valueColor="MediumTurquoise"
+          rangeColor="SlateGray"
+            [min]="0"
+            [max]="50"
+          size="100"
         />
-        <label for="roleOrCompany">Role Or Company</label>
-      </p-floatlabel>
-    </p-inputgroup>
-    <div class="flex-auto">
-      <label for="experience">No of Questions:</label>
-
-      <p-floatlabel class="mb-2 block font-bold" variant="in">
-        <p-inputnumber
-         ngModel
-          [showButtons]="true"
-          buttonLayout="horizontal"
-          inputId="horizontal"
-          spinnerMode="horizontal"
-          [step]="1"
-          mode="decimal"
-            [min]="1"
-            name="NoOfQuestion"
-          [style]="{ width: '100%' }"
-        >
-          <ng-template #incrementbuttonicon>
-            <span class="pi pi-plus"></span>
-          </ng-template>
-          <ng-template #decrementbuttonicon>
-            <span class="pi pi-minus"></span>
-          </ng-template>
-        </p-inputnumber>
-      </p-floatlabel>
-    </div>
-  </div>
-     <p-inputgroup>
+        <div class="flex gap-2">
+          <p-button
+            icon="pi pi-plus"
+            (onClick)="OnYes()"
+            [disabled]="noOfQuestions >= 50"
+          />
+          <p-button
+            icon="pi pi-minus"
+            (click)="OnNo()"
+            [disabled]="noOfQuestions <= 0"
+          />
+        </div>
+      </div>
+      </p-inputgroup>
       <p-floatlabel variant="in">
         <textarea
           rows="5"
@@ -142,11 +193,13 @@
           pSize="large"
           style="resize: none"
           class="w-full"
-            name="AdditionalRequirements"
+          name="AdditionalRequirements"
         ></textarea>
         <label for="in_label">Additional Requirements</label>
       </p-floatlabel>
-    </p-inputgroup>
+    </div>
+
+    
     <div class="p-field">
       <button pButton type="submit" label="Submit"></button>
     </div>
@@ -183,6 +236,12 @@
     </div>
   </div>
 </p-card>
-<div class="card flex justify-center ">
-    <p-progress-spinner  *ngIf="isLoading" strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+<div class="card flex justify-center">
+  <p-progress-spinner
+    *ngIf="isLoading"
+    strokeWidth="8"
+    fill="transparent"
+    animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }"
+  />
 </div>

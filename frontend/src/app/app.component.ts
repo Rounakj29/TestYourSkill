@@ -8,8 +8,10 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { NgClass } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
+import { PasswordModule } from 'primeng/password';
 
 import { InputTextModule } from 'primeng/inputtext';
+import { Card } from "primeng/card";
 
 @Component({
   selector: 'app-root',
@@ -25,22 +27,36 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,
     InputTextModule,
     CommonModule,
-  ],
+    Card,
+    PasswordModule
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
   items: AppComponent[] | undefined;
   checked: boolean = false;
   visible: boolean = false;
   verifyCode: string = '';
-  accessGranted: boolean = true;
+  accessGranted: boolean = false;
   errorMsg: string = '';
   showDialog() {
     this.visible = true;
     this.errorMsg = '';
     this.verifyCode = '';
+  }
+  ngOnInit(): void {
+    console.log('Component has been initialized!');
+    //wait for the DOM to be ready before toggling dark mode
+    // setTimeout(() => {
+    //   const element = document.querySelector('html');
+    //   if (element) {
+    //     element.classList.toggle('my-app-dark', this.checked);
+    //   }
+    // }, 10);
+   // this.toggleDarkMode();
+    // Perform initialization tasks here
   }
   toggleDarkMode() {
     this.checked = !this.checked;
@@ -48,6 +64,7 @@ export class AppComponent {
     if (element) {
       element.classList.toggle('my-app-dark');
     }
+    
   }
   async verifyAccess() {
     // Use GET with query parameter as per your backend
@@ -58,7 +75,6 @@ export class AppComponent {
       { method: 'POST' }
     );
     console.log(response);
-    debugger;
     if (response.ok) {
       const result = await response.json();
       if (result === true) {

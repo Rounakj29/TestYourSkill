@@ -14,6 +14,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { ChangeDetectorRef } from '@angular/core';
+import { Knob } from 'primeng/knob';
 
 interface City {
   name: string;
@@ -35,7 +36,8 @@ interface City {
     InputGroupAddonModule,
     FloatLabelModule,
     TextareaModule,
-    ProgressSpinner
+    ProgressSpinner,
+    Knob
   ],
   templateUrl: './skillverify.component.html',
   styleUrl: './skillverify.component.css',
@@ -52,9 +54,22 @@ export class SkillverifyComponent {
   text2: string | undefined;
 
   number: string | undefined;
-
+  noOfQuestions: number = 0; 
+  yearsOfExperience: number = 0;
   selectedCity: City | undefined;
-
+  onNoOfQuestionsChange(event: any) {
+    console.log('No of Questions changed:', event.value);
+  }
+  OnNo() {
+    console.log('Knob value changed:', this.noOfQuestions);
+    this.noOfQuestions = this.noOfQuestions - 1;
+    this.cdr.detectChanges(); // Ensure UI reflects the change immediately
+  }
+  OnYes() {
+    console.log('Knob value changed:', this.noOfQuestions);
+    this.noOfQuestions = this.noOfQuestions + 1;
+    this.cdr.detectChanges(); // Ensure UI reflects the change immediately
+  }
   cities: City[] = [
     { name: 'New York', code: 'NY' },
     { name: 'Rome', code: 'RM' },
