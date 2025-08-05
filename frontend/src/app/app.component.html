@@ -177,37 +177,67 @@
   }
 </style>
 <div class="main-content">
-<div class="card">
-  <p-toolbar
-    [style]="{ 'border-radius': '3rem', padding: '1rem 1rem 1rem 1.5rem' }"
-  >
-    <ng-template #start>
-      <div class="flex items-center gap-2">
-        <label class="text-2xl font-bold">IntelliPrep: Personalized Challenge Questions</label>
-      </div>
-    </ng-template>
-     <ng-template #end>
-            <div class="flex items-center gap-2" [style]="{'display':'flex', 'gap':'15px', 'align-items':'center' }">
-                 <div class="card flex justify-center">
-          <p-toggleswitch (onChange)="toggleDarkMode()">
-    <ng-template #handle let-checked="checked">
-        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-moon' : 'pi-sun']"></i>
-    </ng-template>
-</p-toggleswitch>
-      
+  <div class="card">
+    <p-toolbar
+      [style]="{ 'border-radius': '3rem', padding: '1rem 1rem 1rem 1.5rem' }"
+    >
+      <ng-template #start>
+        <div class="flex items-center gap-2">
+          <label class="text-2xl font-bold"
+            >IntelliPrep: Personalized Challenge Questions</label
+          >
+        </div>
+      </ng-template>
+      <ng-template #end>
+        <div
+          class="flex items-center gap-2"
+          [style]="{ display: 'flex', gap: '15px', 'align-items': 'center' }"
+        >
+          <div class="card flex justify-center">
+            <p-toggleswitch (onChange)="toggleDarkMode()">
+              <ng-template #handle let-checked="checked">
+                <i
+                  [ngClass]="['!text-xs', 'pi', checked ? 'pi-moon' : 'pi-sun']"
+                ></i>
+              </ng-template>
+            </p-toggleswitch>
           </div>
-                <p-button *ngIf="!accessGranted" label="Verify" severity="contrast"size="large"[rounded]="true" variant="outlined" severity="warn"  [raised]="true" (click)="showDialog()"/>
+          <p-button
+            *ngIf="!accessGranted"
+            label="Verify"
+            severity="contrast"
+            size="large"
+            [rounded]="true"
+            variant="outlined"
+            severity="warn"
+            [raised]="true"
+            (click)="showDialog()"
+          />
+        </div>
+      </ng-template>
+    </p-toolbar>
+  </div>
+  <div *ngIf="accessGranted">
+    <app-skillverify></app-skillverify>
+  </div>
+  <p-card  *ngIf="!accessGranted">
+  <div class="flex flex-col items-center w-full">
+    Click the button below to verify access to the app.
+    <p-button label="Verify Access" (click)="showDialog()" />
+  </div>
+</p-card>
+</div>
+<div class="card flex justify-center">
+  <p-progress-spinner
+    *ngIf="isLoading"
+    strokeWidth="8"
+    fill="transparent"
+    animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }"
+  />
+</div>
 
-            </div>
-        </ng-template>
-   
-  </p-toolbar>
-</div>
-<div *ngIf="accessGranted">
-<app-skillverify></app-skillverify>
-</div>
-</div>
-<main class="main" hidden [style]="{'display':'none'}">
+<main class="main" hidden [style]="{ display: 'none' }">
   <div class="content">
     <div class="left-side" hidden>
       <svg
@@ -348,33 +378,32 @@
     </div>
   </div>
 </main>
-<p-card *ngIf="!accessGranted">
-  <div class="flex flex-col items-center w-full">
-  Click the button below to verify access to the app.
-  <p-button label="Verify Access" (click)="showDialog()" />
-  </div>
-  </p-card>
- <p-dialog class="dialog-body" header="Verify Access" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <span class="p-text-secondary block mb-8">Enter Code To Access.</span>
-    <div class="flex items-center gap-4 mb-4">
-        <label  for="Verify_Access" class="font-semibold w-24">Verify Access</label>
-         <p-password id="Verify_Access" class="flex-auto" autocomplete="off"
-               [(ngModel)]="verifyCode" [toggleMask]="true"  size="large" [feedback]="false"/>
-       
-    </div>
-    <div *ngIf="errorMsg" class="p-error mb-2">{{ errorMsg }}</div>
-    <div class="flex justify-start gap-2">
-        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-        <p-button label="Verify" (click)="verifyAccess()" />
-    </div>
-</p-dialog>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<p-dialog
+  class="dialog-body"
+  header="Verify Access"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-8">Enter Code To Access.</span>
+  <div class="flex items-center gap-4 mb-4">
+    <label for="Verify_Access" class="font-semibold w-24">Verify Access</label>
+    <p-password
+      id="Verify_Access"
+      class="flex-auto"
+      autocomplete="off"
+      [(ngModel)]="verifyCode"
+      [toggleMask]="true"
+      size="large"
+      [feedback]="false"
+    />
+  </div>
+  <div *ngIf="errorMsg" class="p-error mb-2">{{ errorMsg }}</div>
+  <div class="flex justify-start gap-2">
+    <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+    <p-button label="Verify" (click)="verifyAccess()" />
+  </div>
+</p-dialog>
 
 <router-outlet />

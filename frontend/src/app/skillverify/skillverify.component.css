@@ -1,29 +1,47 @@
-.question { margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 6px; }
-        .mcq-options { margin-left: 1em; }
-        .code-block { background: #f4f4f4; padding: 1em; border-radius: 4px; font-family: monospace; }
-        .type-label { font-weight: bold; color: #0074d9; }
+.question {
+  margin-bottom: 2em;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.mcq-options {
+  margin-left: 1em;
+}
+.code-block {
+  background: #161d2f;
+  color: wheat;
+  padding: 1em;
+  border-radius: 4px;
+  font-family: monospace;
+}
+.type-label {
+  font-weight: bold;
+  color: #0074d9;
+}
 
-        p-progress-spinner {
-    position: fixed;
-    z-index: 999;
-    height: 2em;
-    width: 2em;
-    overflow: show;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+
+
+p-progress-spinner {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 /* Transparent Overlay */
 p-progress-spinner:before {
-  content: '';
+  content: "";
   display: block;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.53);
+  background-color: rgba(0, 0, 0, 0.53);
 }

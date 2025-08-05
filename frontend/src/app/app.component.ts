@@ -9,6 +9,8 @@ import { NgClass } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { PasswordModule } from 'primeng/password';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { Card } from "primeng/card";
@@ -28,7 +30,8 @@ import { Card } from "primeng/card";
     InputTextModule,
     CommonModule,
     Card,
-    PasswordModule
+    PasswordModule,
+    ProgressSpinner
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -41,6 +44,10 @@ export class AppComponent implements OnInit {
   verifyCode: string = '';
   accessGranted: boolean = false;
   errorMsg: string = '';
+  isLoading: boolean = false;
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   showDialog() {
     this.visible = true;
     this.errorMsg = '';
@@ -68,6 +75,18 @@ export class AppComponent implements OnInit {
   }
   // var localhostUrl = 'https://localhost:7101/api/UserRequest';
   async verifyAccess() {
+    this.isLoading = true;
+    this.errorMsg = '';
+    
+    this.cdr.detectChanges();
+    if (!this.verifyCode) {
+      this.errorMsg = 'Please enter a verification code.';
+      this.isLoading = false;
+      
+    this.cdr.detectChanges();
+      return;
+    }
+    // this.cdr.detectChanges();
     // Use GET with query parameter as per your backend
     const response = await fetch(
       `https://skill-ish-bnf8dxejg7czhmbw.eastus2-01.azurewebsites.net/api/UserRequest/VerifyAccess?value=${encodeURIComponent(
@@ -81,11 +100,17 @@ export class AppComponent implements OnInit {
       if (result === true) {
         this.accessGranted = true;
         this.visible = false;
+        this.isLoading = false;
+        this.cdr.detectChanges();
       } else {
         this.errorMsg = 'Invalid code. Please try again.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
     } else {
       this.errorMsg = 'Verification failed. Please try again.';
+      this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 }

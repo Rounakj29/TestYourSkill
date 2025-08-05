@@ -205,7 +205,10 @@
     </div>
   </form>
 </p-card>
-<p-card *ngIf="questions.length">
+
+
+
+<p-card *ngIf="questions.length" class="mt-8">
   <ng-template #title>Generated Questions</ng-template>
   <div id="results">
     <div *ngIf="error" class="p-error">{{ error }}</div>
