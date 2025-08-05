@@ -96,9 +96,9 @@ export class SkillverifyComponent {
         : null,
       AdditionalRequirements: value.AdditionalRequirements,
     };
-
+    var localhostUrl = 'https://localhost:7101/api/UserRequest';
     this.http
-      .post<any>('https://localhost:7101/api/UserRequest', data)
+      .post<any>('https://skill-ish-bnf8dxejg7czhmbw.eastus2-01.azurewebsites.net/api/UserRequest', data)
       .subscribe({
         next: (result) => {
           this.isLoading = true;

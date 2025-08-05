@@ -66,10 +66,11 @@ export class AppComponent implements OnInit {
     }
     
   }
+  // var localhostUrl = 'https://localhost:7101/api/UserRequest';
   async verifyAccess() {
     // Use GET with query parameter as per your backend
     const response = await fetch(
-      `https://localhost:7101/api/UserRequest/VerifyAccess?value=${encodeURIComponent(
+      `https://skill-ish-bnf8dxejg7czhmbw.eastus2-01.azurewebsites.net/api/UserRequest/VerifyAccess?value=${encodeURIComponent(
         this.verifyCode
       )}`,
       { method: 'POST' }
