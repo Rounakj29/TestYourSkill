@@ -51,9 +51,9 @@
     line-height: 100%;
     letter-spacing: -0.125rem;
     margin: 0;
-    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
+    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol";
   }
 
   p {
@@ -176,10 +176,38 @@
     }
   }
 </style>
+<div class="main-content">
+<div class="card">
+  <p-toolbar
+    [style]="{ 'border-radius': '3rem', padding: '1rem 1rem 1rem 1.5rem' }"
+  >
+    <ng-template #start>
+      <div class="flex items-center gap-2">
+        <label class="text-2xl font-bold">Ready for the Challenge?</label>
+      </div>
+    </ng-template>
+     <ng-template #end>
+            <div class="flex items-center gap-2" [style]="{'display':'flex', 'gap':'15px', 'align-items':'center' }">
+                 <div class="card flex justify-center">
+          <p-toggleswitch (onChange)="toggleDarkMode()">
+    <ng-template #handle let-checked="checked">
+        <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-moon' : 'pi-sun']"></i>
+    </ng-template>
+</p-toggleswitch>
+      
+          </div>
+                <p-button *ngIf="!accessGranted" label="Verify" severity="contrast"size="large"[rounded]="true" variant="outlined" severity="warn"  [raised]="true" (click)="showDialog()"/>
 
-
+            </div>
+        </ng-template>
+   
+  </p-toolbar>
+</div>
+<div *ngIf="accessGranted">
 <app-skillverify></app-skillverify>
-<main class="main">
+</div>
+</div>
+<main class="main" hidden [style]="{'display':'none'}">
   <div class="content">
     <div class="left-side" hidden>
       <svg
@@ -233,32 +261,27 @@
     <div class="divider" role="separator" aria-label="Divider" hidden></div>
     <div class="right-side" hidden>
       <div class="pill-group">
-        @for (item of [
-          { title: 'Explore the Docs', link: 'https://angular.dev' },
-          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },
-          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },
-          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },
-          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },
-        ]; track item.title) {
-          <a
-            class="pill"
-            [href]="item.link"
-            target="_blank"
-            rel="noopener"
+        @for (item of [ { title: 'Explore the Docs', link: 'https://angular.dev'
+        }, { title: 'Learn with Tutorials', link:
+        'https://angular.dev/tutorials' }, { title: 'CLI Docs', link:
+        'https://angular.dev/tools/cli' }, { title: 'Angular Language Service',
+        link: 'https://angular.dev/tools/language-service' }, { title: 'Angular
+        DevTools', link: 'https://angular.dev/tools/devtools' }, ]; track
+        item.title) {
+        <a class="pill" [href]="item.link" target="_blank" rel="noopener">
+          <span>{{ item.title }}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="14"
+            viewBox="0 -960 960 960"
+            width="14"
+            fill="currentColor"
           >
-            <span>{{ item.title }}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="14"
-              viewBox="0 -960 960 960"
-              width="14"
-              fill="currentColor"
-            >
-              <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
-              />
-            </svg>
-          </a>
+            <path
+              d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
+            />
+          </svg>
+        </a>
         }
       </div>
       <div class="social-links">
@@ -326,6 +349,20 @@
   </div>
 </main>
 
+ <p-dialog class="dialog-body" header="Verify Access" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-8">Enter Code To Access.</span>
+    <div class="flex items-center gap-4 mb-4">
+        <label for="Verify_Access" class="font-semibold w-24">Verify Access</label>
+        <input pInputText id="Verify_Access" class="flex-auto" autocomplete="off"
+               [(ngModel)]="verifyCode" />
+    </div>
+    <div *ngIf="errorMsg" class="p-error mb-2">{{ errorMsg }}</div>
+    <div class="flex justify-start gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Verify" (click)="verifyAccess()" />
+    </div>
+</p-dialog>
+
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
@@ -333,6 +370,5 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
 
 <router-outlet />
