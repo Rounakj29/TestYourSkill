@@ -28,7 +28,70 @@
         </div>
     </form>
 </p-card>
+<p-card>
+      <ng-template #title>Ready for the Challenge?</ng-template>
+   
+    <div class="card grid grid-cols-1 md:grid-cols-2 gap-4">
+    <p-inputgroup>
+        <p-inputgroup-addon>
+            <i class="pi pi-microchip"></i>
+        </p-inputgroup-addon>
 
+<p-floatlabel variant="in">
+    <input pInputText id="Texh_Stack" [(ngModel)]="text1" autocomplete="off" />
+    <label for="Texh_Stack">Tech Stack (Comma Separated)</label>
+</p-floatlabel>
+    </p-inputgroup>
+<p-inputgroup>
+<div class="flex-auto">
+        <label for="experience">Experience (Years)</label>
+
+        <p-floatlabel class="mb-2 block font-bold" variant="in" >
+           <p-inputnumber [(ngModel)]="number" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.1" mode="decimal" [style]="{'width': '100%'}">
+        <ng-template #incrementbuttonicon>
+            <span class="pi pi-plus"></span>
+        </ng-template>
+        <ng-template #decrementbuttonicon>
+            <span class="pi pi-minus"></span>
+        </ng-template>
+    </p-inputnumber>
+        </p-floatlabel>
+    
+    </div>
+</p-inputgroup>
+   <p-inputgroup>
+        <p-inputgroup-addon>
+            <i class="pi pi-microchip"></i>
+        </p-inputgroup-addon>
+
+<p-floatlabel variant="in">
+    <input pInputText id="roleOrCompany" [(ngModel)]="text1" autocomplete="off" />
+    <label for="roleOrCompany">Role Or Company</label>
+</p-floatlabel>
+    </p-inputgroup>
+    <div class="flex-auto">
+        <label for="experience">No of Questions:</label>
+
+        <p-floatlabel class="mb-2 block font-bold" variant="in" >
+           <p-inputnumber [(ngModel)]="number" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" mode="decimal" [style]="{'width': '100%'}">
+        <ng-template #incrementbuttonicon>
+            <span class="pi pi-plus"></span>
+        </ng-template>
+        <ng-template #decrementbuttonicon>
+            <span class="pi pi-minus"></span>
+        </ng-template>
+    </p-inputnumber>
+        </p-floatlabel>
+    
+    </div>
+    <p-inputgroup>
+     <p-floatlabel variant="in">
+    <textarea rows="5" cols="30" pTextarea [autoResize]="true" id="over_label" [(ngModel)]="text2" pSize="large"  style="resize: none" ></textarea>
+    <label for="in_label">Additional Requirements</label>
+</p-floatlabel>
+        </p-inputgroup>
+</div>
+</p-card>
 <p-card>
     <ng-template #title>Generated Questions</ng-template>
     <div id="results">

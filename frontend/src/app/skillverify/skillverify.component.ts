@@ -8,40 +8,81 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { TextareaModule } from 'primeng/textarea';
 
+interface City {
+  name: string;
+  code: string;
+}
 @Component({
-    selector: 'app-skillverify',
-    standalone: true,
-    imports: [ButtonModule, CardModule, InputTextModule, InputNumberModule, Textarea, FormsModule, HttpClientModule, CommonModule],
-    templateUrl: './skillverify.component.html',
-    styleUrl: './skillverify.component.css'
+  selector: 'app-skillverify',
+  standalone: true,
+  imports: [
+    ButtonModule,
+    CardModule,
+    InputTextModule,
+    InputNumberModule,
+    Textarea,
+    FormsModule,
+    HttpClientModule,
+    CommonModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    FloatLabelModule,
+    TextareaModule,
+  ],
+  templateUrl: './skillverify.component.html',
+  styleUrl: './skillverify.component.css',
 })
 export class SkillverifyComponent {
-      questions: any[] = [];
+  questions: any[] = [];
   error: string | null = null;
 
   constructor(private http: HttpClient) {}
+  text1: string | undefined;
 
+  text2: string | undefined;
+
+  number: string | undefined;
+
+  selectedCity: City | undefined;
+
+  cities: City[] = [
+    { name: 'New York', code: 'NY' },
+    { name: 'Rome', code: 'RM' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Istanbul', code: 'IST' },
+    { name: 'Paris', code: 'PRS' },
+  ];
   onSubmit(form: any) {
     if (form.invalid) return;
     const value = form.value;
     const data = {
-      TechStack: value.TechStack.split(',').map((s: string) => s.trim()).filter(Boolean),
+      TechStack: value.TechStack.split(',')
+        .map((s: string) => s.trim())
+        .filter(Boolean),
       Experience: value.Experience ? parseInt(value.Experience, 10) : null,
       RoleOrCompany: value.RoleOrCompany,
-      NoOfQuestion: value.NoOfQuestion ? parseInt(value.NoOfQuestion, 10) : null,
-      AdditionalRequirements: value.AdditionalRequirements
+      NoOfQuestion: value.NoOfQuestion
+        ? parseInt(value.NoOfQuestion, 10)
+        : null,
+      AdditionalRequirements: value.AdditionalRequirements,
     };
 
-    this.http.post<any>('https://localhost:7101/api/UserRequest', data).subscribe({
-      next: (result) => {
-        this.error = null;
-        this.questions = result.questions || [];
-      },
-      error: (err) => {
-        this.error = 'Failed to fetch questions';
-        this.questions = [];
-      }
-    });
+    this.http
+      .post<any>('https://localhost:7101/api/UserRequest', data)
+      .subscribe({
+        next: (result) => {
+          this.error = null;
+          this.questions = result.questions || [];
+        },
+        error: (err) => {
+          this.error = 'Failed to fetch questions';
+          this.questions = [];
+        },
+      });
   }
 }

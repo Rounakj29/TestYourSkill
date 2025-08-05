@@ -35,7 +35,7 @@ export class AppComponent {
   checked: boolean = false;
   visible: boolean = false;
   verifyCode: string = '';
-  accessGranted: boolean = false;
+  accessGranted: boolean = true;
   errorMsg: string = '';
   showDialog() {
     this.visible = true;
