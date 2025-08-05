@@ -12,6 +12,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { ChangeDetectorRef } from '@angular/core';
 
 interface City {
   name: string;
@@ -33,6 +35,7 @@ interface City {
     InputGroupAddonModule,
     FloatLabelModule,
     TextareaModule,
+    ProgressSpinner
   ],
   templateUrl: './skillverify.component.html',
   styleUrl: './skillverify.component.css',
@@ -40,8 +43,10 @@ interface City {
 export class SkillverifyComponent {
   questions: any[] = [];
   error: string | null = null;
-
-  constructor(private http: HttpClient) {}
+  isLoading: boolean = false;
+  constructor(private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
   text1: string | undefined;
 
   text2: string | undefined;
@@ -58,7 +63,12 @@ export class SkillverifyComponent {
     { name: 'Paris', code: 'PRS' },
   ];
   onSubmit(form: any) {
+     this.isLoading = true;
+     this.cdr.detectChanges(); // Ensure UI reflects the spinner change immediately
+ 
+    debugger;
     if (form.invalid) return;
+    
     const value = form.value;
     const data = {
       TechStack: value.TechStack.split(',')
@@ -76,12 +86,17 @@ export class SkillverifyComponent {
       .post<any>('https://localhost:7101/api/UserRequest', data)
       .subscribe({
         next: (result) => {
+          this.isLoading = true;
           this.error = null;
           this.questions = result.questions || [];
+          this.isLoading = false;
+          this.cdr.detectChanges(); 
         },
         error: (err) => {
           this.error = 'Failed to fetch questions';
           this.questions = [];
+          this.isLoading = false;
+          this.cdr.detectChanges(); 
         },
       });
   }
