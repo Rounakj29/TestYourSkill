@@ -100,7 +100,7 @@ namespace Backend.Service
             var questionType = userRequest.QuestionType ?? "All types"; // Default to "All types" if not specified
             var noOfQuestion = userRequest.NoOfQuestion.HasValue ? userRequest.NoOfQuestion.ToString() : "an unspecified number of";
             var additional = userRequest.AdditionalRequirements ?? "";
-            var aiPrompt = $$$"""
+            var aiPrompt = $"""
                 You are an expert technical interviewer.
 
                 Goal: Generate a set of interview questions tailored to the following user input:
@@ -128,27 +128,29 @@ namespace Backend.Service
                         - how_to_answer (string)
                         - answer_text (string)
                 - Return only valid JSON in the following structure (no comments or extra text):
-
+                """ +
+                @"""
                 {{
-                  "questions": [
-                    {{
-                      "question_no": 1,
-                      "question": "...",
-                      "type": "...",
-                      "options": ["...", "..."],
-                      "code_snippet": "...",
-                      "explanation": "...",
-                      "difficulty": "...",
-                      "tags": ["...", "..."],
-                      "answer": {{
-                        "how_to_answer": "...",
-                        "answer_text": "..."
-                      }}
-                    }},
-                    ...
-                  ]
-                }}
-                """;
+                    ""questions"":
+                    [
+                        {{
+                            ""question_no"": 1,
+                            ""question"": ""..."",
+                            ""type"": ""..."",
+                            ""options"": [""..."", ""...""],
+                            ""code_snippet"": ""..."",
+                            ""explanation"": ""..."",
+                            ""difficulty"": ""..."",
+                            ""tags"": [""..."", ""...""],
+                            ""answer"": 
+                                {{
+                                    ""how_to_answer"": ""..."",
+                                    ""answer_text"": ""..."",
+                                }}
+                        }},
+                       ...                              
+                    ]
+                }};""";
             return aiPrompt;
         }
 
