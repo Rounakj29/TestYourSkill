@@ -1,3 +1,4 @@
+<p-toast />
 <!-- <p-card>
   <ng-template #title>Generate Interview Questions</ng-template>
   <form #userRequestForm="ngForm" (ngSubmit)="onSubmit(userRequestForm)"> 
@@ -62,6 +63,41 @@
         </p-floatlabel>
       </p-inputgroup>
         
+
+         <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-question-circle"></i>
+        </p-inputgroup-addon>
+
+        <p-floatlabel variant="in">
+          <input
+            pInputText
+            id="Question_Type"
+            autocomplete="off"
+            ngModel
+            name="QuestionType"
+            required
+          />
+          <label for="Question_Type">Question Type</label>
+        </p-floatlabel>
+      </p-inputgroup>
+      
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-barcode"></i>
+        </p-inputgroup-addon>
+
+        <p-floatlabel variant="in">
+          <p-inputnumber
+            id="Difficulty_Level"
+            autocomplete="off"
+            ngModel
+            name="DifficultyLvl"
+            [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="4" 
+             />
+          <label for="Difficulty_Level">Difficulty Level (1:Easy, 2:Medium, 3:Hard, 4:Mixed)</label>
+        </p-floatlabel>
+      </p-inputgroup>
       <!-- <p-inputgroup>
         <div class="flex-auto">
           <label for="experience">Experience (Years)</label>
@@ -123,11 +159,13 @@
             icon="pi pi-plus"
             (onClick)="yearsOfExperience=yearsOfExperience+1"
             [disabled]="yearsOfExperience >= 70"
+            pRipple 
           />
           <p-button
             icon="pi pi-minus"
             (click)="yearsOfExperience=yearsOfExperience-1"
             [disabled]="yearsOfExperience <= 0"
+            pRipple
           />
         </div>
       </div>
@@ -170,14 +208,17 @@
         />
         <div class="flex gap-2">
           <p-button
+
             icon="pi pi-plus"
             (onClick)="OnYes()"
             [disabled]="noOfQuestions >= 50"
+            pRipple
           />
           <p-button
             icon="pi pi-minus"
             (click)="OnNo()"
             [disabled]="noOfQuestions <= 0"
+            pRipple
           />
         </div>
       </div>
@@ -201,7 +242,7 @@
 
     
     <div class="p-field">
-      <button pButton type="submit" label="Submit"></button>
+      <button pButton type="submit" pRipple  label="Submit"></button>
     </div>
   </form>
 </p-card>
@@ -218,7 +259,7 @@
           [{{ q.type }}] Question #{{ q.question_no }}
         </div>
         <div>
-          <strong>{{ q.question }}</strong>
+          <strong class="whitespace-break-spaces">{{ q.question }}</strong>
         </div>
         <ul *ngIf="q.type === 'MCQ' && q.options?.length" class="mcq-options">
           <li *ngFor="let opt of q.options">{{ opt }}</li>

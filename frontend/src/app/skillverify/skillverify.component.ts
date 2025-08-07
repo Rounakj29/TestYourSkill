@@ -15,6 +15,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { ChangeDetectorRef } from '@angular/core';
 import { Knob } from 'primeng/knob';
+import { ToastModule } from 'primeng/toast';
+import { Ripple } from 'primeng/ripple';
+import { MessageService } from 'primeng/api';
 
 interface City {
   name: string;
@@ -37,21 +40,25 @@ interface City {
     FloatLabelModule,
     TextareaModule,
     ProgressSpinner,
-    Knob
+    Knob,
+    ToastModule,
+    Ripple
   ],
   templateUrl: './skillverify.component.html',
   styleUrl: './skillverify.component.css',
+  providers: [MessageService]
 })
 export class SkillverifyComponent {
   questions: any[] = [];
   error: string | null = null;
   isLoading: boolean = false;
   constructor(private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private messageService: MessageService
   ) {}
-  text1: string | undefined;
+  difficultyLvl: number | undefined; //1 for easy, 2 for medium, 3 for hard 4 for mixed
 
-  text2: string | undefined;
+  QuestionType: string | undefined;
 
   number: string | undefined;
   noOfQuestions: number = 0; 
@@ -80,10 +87,14 @@ export class SkillverifyComponent {
   onSubmit(form: any) {
      this.isLoading = true;
      this.cdr.detectChanges(); // Ensure UI reflects the spinner change immediately
- 
-    debugger;
-    if (form.invalid) return;
     
+    if (form.invalid) {
+      this.error = 'Please fill out all required fields correctly.';
+      this.isLoading = false;
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fill out all required fields correctly.' });
+      this.cdr.detectChanges();
+      return;
+    }
     const value = form.value;
     const data = {
       TechStack: value.TechStack.split(',')
@@ -94,11 +105,14 @@ export class SkillverifyComponent {
       NoOfQuestion: value.NoOfQuestion
         ? parseInt(value.NoOfQuestion, 10)
         : null,
+      DifficultyLevel: value.DifficultyLvl,
+      QuestionType: value.QuestionType,  
       AdditionalRequirements: value.AdditionalRequirements,
     };
     var localhostUrl = 'https://localhost:7101/api/UserRequest';
+    var azureUrl = 'https://skill-ish-bnf8dxejg7czhmbw.eastus2-01.azurewebsites.net/api/UserRequest';
     this.http
-      .post<any>('https://skill-ish-bnf8dxejg7czhmbw.eastus2-01.azurewebsites.net/api/UserRequest', data)
+      .post<any>(azureUrl, data)
       .subscribe({
         next: (result) => {
           this.isLoading = true;

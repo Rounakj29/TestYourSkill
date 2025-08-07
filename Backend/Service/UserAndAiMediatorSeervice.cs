@@ -114,7 +114,6 @@ namespace Backend.Service
 
                 Instructions:
                 - Create exactly {noOfQuestion} interview questions.
-                - Ensure a mix of question formats: short answer, long answer, multiple choice (MCQ), and coding questions.
                 - For each question, provide the following fields:
                     - question_no (integer)
                     - question (string)
