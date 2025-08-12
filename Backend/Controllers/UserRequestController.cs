@@ -59,7 +59,7 @@ namespace Backend.Controllers
                 : "Access Denied";
             bool isAccessGranted = result.Equals("Access Granted", StringComparison.OrdinalIgnoreCase);
 
-            return Task.FromResult<IActionResult>(isAccessGranted ? Ok(result) : Unauthorized(result));
+            return Task.FromResult<IActionResult>(isAccessGranted ? Ok(true) : Unauthorized(false));
         }
 
         [HttpPost("ExportToPdf ")]
