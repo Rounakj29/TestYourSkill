@@ -7,11 +7,22 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
+    outputs:
+      artifact-path: ${{ steps.set-output.outputs.path }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -26,6 +37,12 @@ jobs:
 
       - name: Publish
         run: dotnet publish ./Backend/Backend.csproj --configuration Release --output ./publish
+      
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ./publish
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
